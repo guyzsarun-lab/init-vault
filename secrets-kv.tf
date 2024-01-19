@@ -3,3 +3,9 @@ resource "vault_generic_secret" "kv_line_secret" {
 
   data_json = file("${path.module}/secrets/kv/line_bot_api.json")
 }
+
+resource "vault_generic_secret" "kv_token" {
+  path = "${vault_mount.kv-v2.path}/token"
+
+  data_json = file("${path.module}/secrets/kv/token.json")
+}
