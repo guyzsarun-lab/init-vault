@@ -5,5 +5,5 @@ resource "vault_aws_secret_backend_role" "aws_role" {
 
   policy_document = file("${path.module}/secrets/aws/${each.value}")
 
-  for_each = fileset("${path.module}/secrets/aws", "*")
+  for_each = fileset("${path.module}/secrets/aws", "*.json")
 }
