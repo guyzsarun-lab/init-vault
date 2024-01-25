@@ -7,13 +7,13 @@ resource "vault_mount" "kv-v2" {
 }
 
 resource "vault_kv_secret_backend_v2" "kv-v2_config" {
-  mount                = vault_mount.kv-v2.path
-  max_versions         = 3
+  mount        = vault_mount.kv-v2.path
+  max_versions = 3
 }
 
 resource "vault_kv_secret_v2" "line_secret" {
   mount = vault_mount.kv-v2.path
-  name = "/home_server/line_bot_api"
+  name  = "/home_server/line_bot_api"
 
   data_json = file("${path.module}/secrets/kv/line_bot_api.json")
 
@@ -21,7 +21,7 @@ resource "vault_kv_secret_v2" "line_secret" {
 
 resource "vault_kv_secret_v2" "token" {
   mount = vault_mount.kv-v2.path
-  name = "token"
+  name  = "token"
 
   data_json = file("${path.module}/secrets/kv/token.json")
 }
