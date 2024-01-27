@@ -2,7 +2,7 @@ resource "vault_mount" "database" {
   path = "database"
   type = "database"
 
-  description = "homelab database secret engine"
+  description = "Homelab database secret engine"
 }
 
 resource "vault_database_secret_backend_connection" "postgres" {
