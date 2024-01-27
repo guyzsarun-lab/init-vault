@@ -1,5 +1,5 @@
 resource "vault_mount" "cloud_database" {
-  path = "cloud"
+  path = "database/cloud"
   type = "database"
 
   description = "Cloud database secret engine"

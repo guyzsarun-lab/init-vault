@@ -46,6 +46,12 @@ path "secret/*"
   capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
 
+# List, create, update, and delete key/value secrets at database/
+path "database/*"
+{
+  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+}
+
 # Manage transit secrets engine
 path "transit/*"
 {

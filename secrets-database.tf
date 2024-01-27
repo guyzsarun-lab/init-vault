@@ -1,12 +1,12 @@
-resource "vault_mount" "database" {
-  path = "database"
+resource "vault_mount" "homelab" {
+  path = "database/homelab"
   type = "database"
 
   description = "Homelab database secret engine"
 }
 
 resource "vault_database_secret_backend_connection" "postgres" {
-  backend = vault_mount.database.path
+  backend = vault_mount.homelab.path
   name    = "postgres"
   allowed_roles = [ for role in fileset("${path.module}/secrets/database/postgres", "*.sql") : split(".",role)[0]]
 
@@ -18,7 +18,7 @@ resource "vault_database_secret_backend_connection" "postgres" {
 }
 
 resource "vault_database_secret_backend_role" "postgres_role" {
-  backend             = vault_mount.database.path
+  backend             = vault_mount.homelab.path
   name                = split(".",each.value)[0]
   db_name             = vault_database_secret_backend_connection.postgres.name
   creation_statements = [file("${path.module}/secrets/database/postgres/${each.value}")]
