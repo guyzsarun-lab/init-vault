@@ -8,9 +8,7 @@ resource "vault_mount" "cloud_database" {
 resource "vault_database_secret_backend_connection" "mongo" {
   backend = vault_mount.cloud_database.path
   name    = "mongo"
-  allowed_roles = [
-    "mongo_readonly"
-  ]
+  allowed_roles = [ for role in fileset("${path.module}/secrets/database/mongo", "*.json") : split(".",role)[0]]
 
   mongodb {
     connection_url = "mongodb://{{username}}:{{password}}@${var.mongo.host}:${var.mongo.port}"
