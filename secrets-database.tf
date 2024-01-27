@@ -8,10 +8,7 @@ resource "vault_mount" "database" {
 resource "vault_database_secret_backend_connection" "postgres" {
   backend = vault_mount.database.path
   name    = "postgres"
-  allowed_roles = [
-    "postgres_readonly",
-    "postgres_root"
-  ]
+  allowed_roles = [ for role in fileset("${path.module}/secrets/database/postgres", "*.sql") : split(".",role)[0]]
 
   postgresql {
     connection_url = "host=${var.postgres.host} port=${var.postgres.port} user={{username}} password={{password}} sslmode=disable"
@@ -20,19 +17,12 @@ resource "vault_database_secret_backend_connection" "postgres" {
   }
 }
 
-resource "vault_database_secret_backend_role" "postgres_role_readonly" {
+resource "vault_database_secret_backend_role" "postgres_role" {
   backend             = vault_mount.database.path
-  name                = "postgres_readonly"
+  name                = split(".",each.value)[0]
   db_name             = vault_database_secret_backend_connection.postgres.name
-  creation_statements = ["CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';GRANT SELECT ON ALL TABLES IN SCHEMA public TO \"{{name}}\";"]
-  default_ttl         = 3600
-}
+  creation_statements = [file("${path.module}/secrets/database/postgres/${each.value}")]
 
-
-resource "vault_database_secret_backend_role" "postgres_role_root" {
-  backend             = vault_mount.database.path
-  name                = "postgres_root"
-  db_name             = vault_database_secret_backend_connection.postgres.name
-  creation_statements = ["CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';GRANT ALL ON ALL TABLES IN SCHEMA public TO \"{{name}}\";"]
   default_ttl         = 3600
+  for_each = fileset("${path.module}/secrets/database/postgres", "*.sql")
 }

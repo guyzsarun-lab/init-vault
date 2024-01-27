@@ -5,7 +5,9 @@
 *.tfstate
 *.tfstate.*
 
+# secrets file
 *.json
+*.sql
 
 # Crash log files
 crash.log
