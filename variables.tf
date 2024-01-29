@@ -34,3 +34,9 @@ variable "mongo" {
   })
 }
 
+
+
+variable "test" {
+  type      = string
+  sensitive = true
+}
