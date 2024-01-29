@@ -33,4 +33,3 @@ variable "mongo" {
     database = string
   })
 }
-

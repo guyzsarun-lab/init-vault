@@ -9,7 +9,7 @@ resource "vault_generic_endpoint" "devops_user" {
   path                 = "auth/userpass/users/devops_user"
   ignore_absent_fields = true
 
-  data_json = templatefile("${path.module}/authentication/default_template.tftpl", { policies = sort([ "default","admin_policy"]) })
+  data_json = templatefile("${path.module}/authentication/default_template.tftpl", { policies = sort(["default", "admin_policy"]) })
 }
 
 resource "vault_generic_endpoint" "root_user" {
@@ -17,7 +17,7 @@ resource "vault_generic_endpoint" "root_user" {
   path                 = "auth/userpass/users/root"
   ignore_absent_fields = true
 
-  data_json = templatefile("${path.module}/authentication/default_template.tftpl", { policies = sort(["default","root_policy"]) })
+  data_json = templatefile("${path.module}/authentication/default_template.tftpl", { policies = sort(["default", "root_policy"]) })
 }
 
 resource "vault_generic_endpoint" "view_user" {
@@ -25,5 +25,5 @@ resource "vault_generic_endpoint" "view_user" {
   path                 = "auth/userpass/users/viewer"
   ignore_absent_fields = true
 
-  data_json = templatefile("${path.module}/authentication/default_template.tftpl", { policies = sort(["default","view_policy"])})
+  data_json = templatefile("${path.module}/authentication/default_template.tftpl", { policies = sort(["default", "view_policy"]) })
 }
