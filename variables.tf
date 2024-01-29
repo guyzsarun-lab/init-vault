@@ -33,10 +33,3 @@ variable "mongo" {
     database = string
   })
 }
-
-
-
-variable "test" {
-  type      = string
-  sensitive = true
-}
