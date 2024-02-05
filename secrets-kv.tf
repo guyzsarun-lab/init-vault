@@ -25,3 +25,17 @@ resource "vault_kv_secret_v2" "token" {
 
   data_json = file("${path.module}/secrets/kv/token.json")
 }
+
+resource "vault_kv_secret_v2" "github_read_token" {
+  mount = vault_mount.kv-v2.path
+  name  = "/github/read"
+
+  data_json = file("${path.module}/secrets/kv/github_read.json")
+}
+
+resource "vault_kv_secret_v2" "github_root_token" {
+  mount = vault_mount.kv-v2.path
+  name  = "/github/root"
+
+  data_json = file("${path.module}/secrets/kv/github_root.json")
+}
