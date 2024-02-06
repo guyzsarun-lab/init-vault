@@ -11,31 +11,11 @@ resource "vault_kv_secret_backend_v2" "kv-v2_config" {
   max_versions = 3
 }
 
-resource "vault_kv_secret_v2" "line_secret" {
+resource "vault_kv_secret_v2" "kv_secret" {
   mount = vault_mount.kv-v2.path
-  name  = "/home_server/line_bot_api"
+  name                = split(".", each.value)[0]
+  delete_all_versions = true
 
-  data_json = file("${path.module}/secrets/kv/line_bot_api.json")
-
-}
-
-resource "vault_kv_secret_v2" "token" {
-  mount = vault_mount.kv-v2.path
-  name  = "token"
-
-  data_json = file("${path.module}/secrets/kv/token.json")
-}
-
-resource "vault_kv_secret_v2" "github_read_token" {
-  mount = vault_mount.kv-v2.path
-  name  = "/github/read"
-
-  data_json = file("${path.module}/secrets/kv/github_read.json")
-}
-
-resource "vault_kv_secret_v2" "github_root_token" {
-  mount = vault_mount.kv-v2.path
-  name  = "/github/root"
-
-  data_json = file("${path.module}/secrets/kv/github_root.json")
+  for_each    = fileset("${path.module}/secrets/kv/", "**/*.json")
+  data_json =  file("${path.module}/secrets/kv/${each.value}")
 }
