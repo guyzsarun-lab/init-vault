@@ -12,10 +12,10 @@ resource "vault_kv_secret_backend_v2" "kv-v2_config" {
 }
 
 resource "vault_kv_secret_v2" "kv_secret" {
-  mount = vault_mount.kv-v2.path
+  mount               = vault_mount.kv-v2.path
   name                = split(".", each.value)[0]
   delete_all_versions = true
 
-  for_each    = fileset("${path.module}/secrets/kv/", "**/*.json")
-  data_json =  file("${path.module}/secrets/kv/${each.value}")
+  for_each  = fileset("${path.module}/secrets/kv/", "**/*.json")
+  data_json = file("${path.module}/secrets/kv/${each.value}")
 }

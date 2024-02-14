@@ -13,22 +13,22 @@ resource "vault_mount" "pki_int" {
 }
 
 resource "vault_pki_secret_backend_root_cert" "root_ca" {
-  depends_on            = [vault_mount.pki]
-  backend               = vault_mount.pki.path
-  type                  = "internal"
-  common_name           = "${var.ca_certs.common_name} Root CA"
-  ttl                   = "87600h"
-  format                = "pem"
-  private_key_format    = "der"
-  key_type              = "rsa"
-  key_bits              = 4096
-  exclude_cn_from_sans  = true
-  organization          = var.ca_certs.organization
+  depends_on           = [vault_mount.pki]
+  backend              = vault_mount.pki.path
+  type                 = "internal"
+  common_name          = "${var.ca_certs.common_name} Root CA"
+  ttl                  = "87600h"
+  format               = "pem"
+  private_key_format   = "der"
+  key_type             = "rsa"
+  key_bits             = 4096
+  exclude_cn_from_sans = true
+  organization         = var.ca_certs.organization
 }
 
 resource "local_file" "root_ca_cert" {
-    content  = vault_pki_secret_backend_root_cert.root_ca.certificate
-    filename = "${path.module}/secrets/certs/root_ca.pem"
+  content  = vault_pki_secret_backend_root_cert.root_ca.certificate
+  filename = "${path.module}/secrets/certs/root_ca.pem"
 }
 
 resource "vault_pki_secret_backend_role" "root_ca_role" {
@@ -45,16 +45,16 @@ resource "vault_pki_secret_backend_role" "root_ca_role" {
 
 
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate_ca" {
-  depends_on = [ vault_mount.pki_int ]
+  depends_on = [vault_mount.pki_int]
 
-  backend = vault_mount.pki_int.path
-  type = "internal"
+  backend     = vault_mount.pki_int.path
+  type        = "internal"
   common_name = "${var.ca_certs.common_name} Intermediate Certificate"
 
-  format = "pem"
+  format             = "pem"
   private_key_format = "der"
-  key_type = "rsa"
-  key_bits = 4096
+  key_type           = "rsa"
+  key_bits           = 4096
 }
 
 resource "local_file" "intermediate_ca_csr" {
@@ -69,10 +69,10 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "root_ca_int" {
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate_ca.csr
   common_name          = "${var.ca_certs.common_name} Intermediate Certificate"
   exclude_cn_from_sans = true
-  organization          = var.ca_certs.organization
-  format = "pem_bundle"
-  ttl                   = "43800h"
-  revoke = true
+  organization         = var.ca_certs.organization
+  format               = "pem_bundle"
+  ttl                  = "43800h"
+  revoke               = true
 }
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate_ca_set_signed" {
@@ -95,13 +95,13 @@ resource "vault_pki_secret_backend_cert" "client_certificate" {
   depends_on = [vault_pki_secret_backend_role.int_ca_role]
 
   backend = vault_mount.pki_int.path
-  name = vault_pki_secret_backend_role.int_ca_role.name
+  name    = vault_pki_secret_backend_role.int_ca_role.name
 
   common_name = each.value.common_name
-  alt_names = each.value.sans
+  alt_names   = each.value.sans
 
-  for_each   = {
-    for index, cn in var.client_certs:
+  for_each = {
+    for index, cn in var.client_certs :
     cn.common_name => cn
   }
   revoke = true
