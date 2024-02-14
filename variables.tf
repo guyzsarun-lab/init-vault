@@ -40,6 +40,7 @@ variable "ca_certs" {
     common_name = string
     organization = string
     country = string
+    allowed_domains =list(string)
   })
 }
 
