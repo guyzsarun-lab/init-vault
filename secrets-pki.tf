@@ -31,19 +31,6 @@ resource "local_file" "root_ca_cert" {
   filename = "${path.module}/secrets/certs/root_ca.pem"
 }
 
-resource "vault_pki_secret_backend_role" "root_ca_role" {
-  backend          = vault_mount.pki.path
-  name             = "root_ca_role"
-  ttl              = 3600
-  allow_ip_sans    = true
-  key_type         = "rsa"
-  key_bits         = 4096
-  allowed_domains  = []
-  allow_subdomains = true
-}
-
-
-
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate_ca" {
   depends_on = [vault_mount.pki_int]
 
