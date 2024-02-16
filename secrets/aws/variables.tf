@@ -12,3 +12,7 @@ variable "aws_region" {
   type      = string
   sensitive = true
 }
+
+variable "path" {
+  type      = string
+}

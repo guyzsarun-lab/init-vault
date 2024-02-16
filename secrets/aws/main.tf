@@ -6,7 +6,7 @@ resource "vault_aws_secret_backend" "aws" {
   default_lease_ttl_seconds = 21600
 
 
-  path        = "aws"
+  path        = var.path
   description = "aws secret engine"
 }
 
