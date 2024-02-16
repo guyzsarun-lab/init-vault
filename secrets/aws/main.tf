@@ -15,7 +15,7 @@ resource "vault_aws_secret_backend_role" "aws_role" {
   name            = split(".", each.value)[0]
   credential_type = "iam_user"
 
-  policy_document = file("${path.module}/secrets/aws/${each.value}")
+  policy_document = file("${path.module}/templates/${each.value}")
 
-  for_each = fileset("${path.module}/secrets/aws", "*.json")
+  for_each = fileset("${path.module}/templates", "*.json")
 }
