@@ -1,16 +1,10 @@
-variable "aws_access_key" {
-  type      = string
+variable "aws" {
   sensitive = true
-}
-
-variable "aws_secret_key" {
-  type      = string
-  sensitive = true
-}
-
-variable "aws_region" {
-  type      = string
-  sensitive = true
+  type = object({
+    access_key = string
+    secret_key = string
+    region     = string
+  })
 }
 
 variable "path" {
