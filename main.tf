@@ -18,3 +18,11 @@ module "secrets-kv" {
   source = "./secrets/kv"
   path = "kv-v2"
 }
+
+module "secrets-certs" {
+  source = "./secrets/certs"
+  path = "certs"
+
+  ca_certs = var.ca_certs
+  client_certs = var.client_certs
+}
