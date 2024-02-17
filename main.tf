@@ -26,3 +26,8 @@ module "secrets-certs" {
   ca_certs = var.ca_certs
   client_certs = var.client_certs
 }
+
+module "secrets-transit" {
+  source = "./secrets/transit"
+  path = "transit"
+}
