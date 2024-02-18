@@ -1,19 +1,13 @@
-variable "aws_access_key" {
-  type      = string
+variable "aws" {
   sensitive = true
+  type = object({
+    access_key = string
+    secret_key = string
+    region     = string
+  })
 }
 
-variable "aws_secret_key" {
-  type      = string
-  sensitive = true
-}
-
-variable "aws_region" {
-  type      = string
-  sensitive = true
-}
-
-variable "postgres" {
+variable "homelab_postgres" {
   sensitive = true
   type = object({
     host     = string
@@ -23,7 +17,7 @@ variable "postgres" {
   })
 }
 
-variable "mongo" {
+variable "cloud_mongo" {
   sensitive = true
   type = object({
     host     = string

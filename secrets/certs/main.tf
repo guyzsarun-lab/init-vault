@@ -1,12 +1,12 @@
 resource "vault_mount" "pki" {
-  path                      = "certs"
+  path                      = var.path
   type                      = "pki"
   default_lease_ttl_seconds = 60 * 60 * 24 * 3650
   max_lease_ttl_seconds     = 60 * 60 * 24 * 3650
 }
 
 resource "vault_mount" "pki_int" {
-  path                      = "certs_int"
+  path                      = "${var.path}_int"
   type                      = vault_mount.pki.type
   default_lease_ttl_seconds = vault_mount.pki.default_lease_ttl_seconds
   max_lease_ttl_seconds     = vault_mount.pki.max_lease_ttl_seconds
@@ -28,7 +28,7 @@ resource "vault_pki_secret_backend_root_cert" "root_ca" {
 
 resource "local_file" "root_ca_cert" {
   content  = vault_pki_secret_backend_root_cert.root_ca.certificate
-  filename = "${path.module}/secrets/certs/root_ca.pem"
+  filename = "${path.module}/output/root_ca.pem"
 }
 
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate_ca" {
@@ -46,7 +46,7 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate_ca" 
 
 resource "local_file" "intermediate_ca_csr" {
   content  = vault_pki_secret_backend_intermediate_cert_request.intermediate_ca.csr
-  filename = "${path.module}/secrets/certs/int_ca.csr"
+  filename = "${path.module}/output/int_ca.csr"
 }
 
 
@@ -97,11 +97,11 @@ resource "vault_pki_secret_backend_cert" "client_certificate" {
 resource "local_file" "client_crt" {
   for_each = vault_pki_secret_backend_cert.client_certificate
   content  = vault_pki_secret_backend_cert.client_certificate[each.key].certificate
-  filename = "${path.module}/secrets/certs/${each.key}/${each.key}.pem"
+  filename = "${path.module}/output/${each.key}/${each.key}.pem"
 }
 
 resource "local_file" "client_key" {
   for_each = vault_pki_secret_backend_cert.client_certificate
   content  = vault_pki_secret_backend_cert.client_certificate[each.key].private_key
-  filename = "${path.module}/secrets/certs/${each.key}/${each.key}.key"
+  filename = "${path.module}/output/${each.key}/${each.key}.key"
 }
