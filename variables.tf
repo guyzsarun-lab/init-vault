@@ -7,7 +7,7 @@ variable "aws" {
   })
 }
 
-variable "postgres" {
+variable "homelab_postgres" {
   sensitive = true
   type = object({
     host     = string
@@ -17,7 +17,7 @@ variable "postgres" {
   })
 }
 
-variable "mongo" {
+variable "cloud_mongo" {
   sensitive = true
   type = object({
     host     = string

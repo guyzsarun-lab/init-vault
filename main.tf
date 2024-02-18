@@ -31,3 +31,17 @@ module "secrets-transit" {
   source = "./secrets/transit"
   path = "transit"
 }
+
+module "secrets-homelab" {
+  source = "./secrets/homelab"
+  path = "database/homelab"
+
+  postgres = var.homelab_postgres
+}
+
+module "secrets-cloud" {
+  source = "./secrets/cloud"
+  path = "database/cloud"
+
+  mongo = var.cloud_mongo
+}
