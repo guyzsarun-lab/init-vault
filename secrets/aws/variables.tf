@@ -8,5 +8,5 @@ variable "aws" {
 }
 
 variable "path" {
-  type      = string
+  type = string
 }

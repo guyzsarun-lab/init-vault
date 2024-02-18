@@ -1,3 +1,3 @@
 variable "path" {
-  type      = string
+  type = string
 }
