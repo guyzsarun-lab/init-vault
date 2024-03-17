@@ -46,7 +46,7 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate_ca" 
 
 resource "local_file" "intermediate_ca_csr" {
   content  = vault_pki_secret_backend_intermediate_cert_request.intermediate_ca.csr
-  filename = "${path.module}/output/int_ca.csr"
+  filename = "${path.module}/output/intermediate/int_csr.pem"
 }
 
 
@@ -60,6 +60,11 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "root_ca_int" {
   format               = "pem_bundle"
   ttl                  = "43800h"
   revoke               = true
+}
+
+resource "local_file" "intermediate_ca_cert" {
+  content  = vault_pki_secret_backend_root_sign_intermediate.root_ca_int.certificate
+  filename = "${path.module}/output/intermediate/int_ca.pem"
 }
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate_ca_set_signed" {
