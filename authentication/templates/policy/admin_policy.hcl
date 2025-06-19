@@ -75,3 +75,10 @@ path "sys/health"
 {
   capabilities = ["read", "sudo"]
 }
+
+# Update Certs
+path "certs_int/*"
+{
+  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+}
+
