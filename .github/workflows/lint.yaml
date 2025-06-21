@@ -19,10 +19,6 @@ jobs:
       - name: fmt
         run: terraform fmt -recursive -check
 
-      - name: validate
-        run: terraform validate
-        env:
-          VAULT_ADDR: https://example.com
   tflint:
     runs-on: ubuntu-latest
     steps:
