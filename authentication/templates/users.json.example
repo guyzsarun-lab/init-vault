@@ -1,0 +1,7 @@
+[
+    {
+        "username": "viewer",
+        "password": "password123",
+        "policies": ["view_policy"]
+    }
+]

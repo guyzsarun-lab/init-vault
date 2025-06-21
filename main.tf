@@ -1,7 +1,3 @@
-module "policy" {
-  source = "./policy"
-}
-
 module "authentication" {
   source = "./authentication"
   path   = "userpass"

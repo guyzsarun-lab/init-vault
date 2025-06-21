@@ -1,4 +1,4 @@
 {
     "policies": [%{ for i,policy in policies ~}"${policy}"%{if i < length(policies) -1 }, %{ endif }%{~ endfor ~}],
-    "password": "password"
+    "password": "${password}"
 }
